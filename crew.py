@@ -1,0 +1,287 @@
+# crew.py
+# CrewAI orchestration — wires all agents together
+# Uses official CrewAI Agent, Task, and Crew structure with kickoff()
+# Agentic AI Banking Customer Support
+# Stephanie Wong Agentic AI for Banking Capstone Project 2026
+
+import os
+import anthropic
+from crewai import Agent, Task, Crew, Process
+from agents.core.classifier_agent import classify_message
+from agents.core.feedback_agent import handle_feedback
+from agents.core.query_agent import handle_query
+from agents.enhanced.ai_simulated_human_handoff_agent import handle_handoff
+from database.db_setup import setup_database
+
+# Ensure database is set up on startup
+setup_database()
+
+# ── Initialize Anthropic client for Self-Service handler ──
+anthropic_client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
+
+# ── LLM model string for CrewAI ──────────────────────────
+claude_llm = "anthropic/claude-sonnet-4-5"
+
+# ── Tier 3 intents that should never create a ticket ─────
+SELF_SERVICE_INTENTS = [
+    "Login or Password Help",
+    "Balance or Transaction Inquiry",
+    "Card Activation",
+    "Account Information Update",
+    "Product Question",
+    "General Feedback",
+]
+
+# ── Shared response rules ─────────────────────────────────
+RESPONSE_RULES = (
+    f'Important rules:\n'
+    f'- Do not use emojis under any circumstances\n'
+    f'- Do not sign off with any internal role names, agent names, or system labels\n'
+    f'- Do not end with a formal sign-off or team name\n'
+    f'- Do not share incorrect information\n'
+    f'- Keep response concise and professional\n'
+    f'- Aim for 2-3 sentences. Only go longer if additional detail is genuinely helpful to the customer\n'
+    f'- Do not promise specific timeframes for human contact\n'
+    f'- Do not make commitments the bank cannot guarantee\n'
+    f'- Sound like a real bank representative, not a chatbot\n'
+)
+
+# ── Define CrewAI Agents ──────────────────────────────────
+classifier_agent = Agent(
+    role="Customer Message Classifier",
+    goal="Classify incoming customer messages into the correct category and route to the appropriate agent",
+    backstory=(
+        "You are an expert banking customer support classifier with years of experience "
+        "identifying customer sentiment, intent, and urgency. You ensure every message "
+        "reaches the right team quickly and accurately."
+    ),
+    llm=claude_llm,
+    verbose=True,
+    allow_delegation=False
+)
+
+feedback_agent = Agent(
+    role="Customer Feedback Handler",
+    goal="Handle positive and negative customer feedback with empathy and professionalism",
+    backstory=(
+        "You are a compassionate banking support specialist who excels at acknowledging "
+        "customer experiences. You celebrate positive feedback warmly and handle complaints "
+        "with genuine empathy, always creating support tickets when needed."
+    ),
+    llm=claude_llm,
+    verbose=True,
+    allow_delegation=False
+)
+
+query_agent = Agent(
+    role="Ticket Query Specialist",
+    goal="Look up ticket status and provide accurate updates to customers",
+    backstory=(
+        "You are a meticulous support specialist who ensures customers always know "
+        "the status of their support tickets. You provide clear, accurate updates "
+        "and help customers understand next steps."
+    ),
+    llm=claude_llm,
+    verbose=True,
+    allow_delegation=False
+)
+
+handoff_agent = Agent(
+    role="AI-Simulated Human Representative",
+    goal="Simulate a warm human escalation response for cases requiring human intervention",
+    backstory=(
+        "You simulate a senior banking customer service representative handling escalated cases. "
+        "In a live environment this role would be fulfilled by a real human agent. "
+        "You respond with warmth, urgency, and genuine empathy to build customer confidence."
+    ),
+    llm=claude_llm,
+    verbose=True,
+    allow_delegation=False
+)
+
+# ── Self-service handler ──────────────────────────────────
+def handle_self_service(message: str, classification: dict) -> dict:
+    """
+    Handles Tier 3 self-service messages that don't need a ticket.
+    Uses Claude's general banking knowledge to respond helpfully.
+    """
+    intent = classification.get("intent", "General")
+
+    prompt = (
+        f'You are a knowledgeable banking customer service specialist '
+        f'at a major US bank.\n\n'
+        f'Customer message: "{message}"\n'
+        f'Intent identified: {intent}\n\n'
+        f'Respond helpfully using your banking knowledge. '
+        f'Give clear, actionable steps or information.\n\n'
+        f'Important rules:\n'
+        f'- Do not use emojis under any circumstances\n'
+        f'- Do not sign off with any internal role names, agent names, or system labels\n'
+        f'- Do not end with a formal sign-off or team name\n'
+        f'- Do not share incorrect information — if unsure, advise the customer to '
+        f'contact the bank directly via phone or branch\n'
+        f'- Keep response concise and professional\n'
+        f'- Sound like a real bank representative, not a chatbot\n\n'
+        f'Return only the response message, no extra text.'
+    )
+
+    response = anthropic_client.messages.create(
+        model="claude-sonnet-4-5",
+        max_tokens=500,
+        messages=[{"role": "user", "content": prompt}]
+    )
+
+    response_text = response.content[0].text.strip()
+
+    return {
+        "agent": "Self-Service Handler",
+        "response": response_text,
+        "label": None,
+        "ticket_created": None,
+        "prompt_sent": prompt,
+        "response_returned": response_text
+    }
+
+# ── Main orchestration function ───────────────────────────
+def run_crew(message: str) -> dict:
+    """
+    Main orchestration function.
+    Classifies the message then routes to the correct agent.
+    """
+
+    # ── Step 1: Classify the message ─────────────────────
+    classification = classify_message(message)
+    sentiment = classification.get("sentiment")
+    intent = classification.get("intent", "")
+    tier = classification.get("tier", 3)
+
+    # ── Step 2: Route based on sentiment + tier ───────────
+    feedback_result = None
+
+    if sentiment == "Escalation Request":
+        task = Task(
+            description=(
+                f'You are handling an escalated banking support case.\n\n'
+                f'Customer message: "{message}"\n'
+                f'Escalation reason: {classification.get("escalation_trigger")}\n\n'
+                f'Write a warm, empathetic response that:\n'
+                f'- Acknowledges the customer personally\n'
+                f'- Shows genuine urgency and care\n'
+                f'- Assures them a specialist will handle their case\n'
+                f'- Gives them confidence their issue will be resolved\n\n'
+                + RESPONSE_RULES
+            ),
+            expected_output="A warm empathetic escalation response",
+            agent=handoff_agent
+        )
+
+    elif sentiment == "Positive Feedback":
+        task = Task(
+            description=(
+                f'You are handling positive feedback from a banking customer.\n\n'
+                f'Customer message: "{message}"\n\n'
+                f'Write a warm, genuine thank-you response in 2-3 sentences that:\n'
+                f'- Acknowledges what they specifically said\n'
+                f'- Expresses genuine appreciation\n'
+                f'- Is personable and human\n\n'
+                + RESPONSE_RULES
+            ),
+            expected_output="A warm personalized thank-you message in 2-3 sentences",
+            agent=feedback_agent
+        )
+
+    elif sentiment == "Negative Feedback" and intent in SELF_SERVICE_INTENTS:
+        result = handle_self_service(message, classification)
+        result["sentiment"] = sentiment
+        result["intent"] = intent
+        result["department"] = classification.get("department")
+        result["escalation_type"] = None
+        result["escalation_trigger"] = None
+        result["classifier_prompt"] = classification.get("prompt_sent")
+        result["classifier_response"] = classification.get("response_returned")
+        result["ticket_created"] = None
+        return result
+
+    elif sentiment == "Negative Feedback":
+        feedback_result = handle_feedback(message, classification)
+        ticket_id = feedback_result.get("ticket_created")
+
+        task = Task(
+            description=(
+                f'You are handling a complaint from a banking customer.\n\n'
+                f'Customer message: "{message}"\n'
+                f'Issue type: {intent}\n'
+                f'Support ticket #{ticket_id} has been created for this case.\n\n'
+                f'Write an empathetic response in 2-3 sentences that:\n'
+                f'- Acknowledges their specific issue with genuine understanding\n'
+                f'- Informs them ticket #{ticket_id} has been created\n'
+                f'- Reassures them the team will follow up\n\n'
+                + RESPONSE_RULES
+            ),
+            expected_output=f"An empathetic 2-3 sentence response mentioning ticket #{ticket_id}",
+            agent=feedback_agent
+        )
+
+    elif sentiment == "Query" and intent == "Ticket Status Inquiry":
+        query_result = handle_query(message, classification)
+        status_info = query_result.get("response")
+
+        task = Task(
+            description=(
+                f'You are handling a ticket status inquiry from a banking customer.\n\n'
+                f'Customer message: "{message}"\n'
+                f'Database result: {status_info}\n\n'
+                f'Relay this ticket status information clearly and professionally '
+                f'in 1-2 sentences.\n\n'
+                + RESPONSE_RULES
+            ),
+            expected_output="A clear 1-2 sentence ticket status update",
+            agent=query_agent
+        )
+
+    else:
+        result = handle_self_service(message, classification)
+        result["sentiment"] = sentiment
+        result["intent"] = intent
+        result["department"] = classification.get("department")
+        result["escalation_type"] = None
+        result["escalation_trigger"] = None
+        result["classifier_prompt"] = classification.get("prompt_sent")
+        result["classifier_response"] = classification.get("response_returned")
+        result["ticket_created"] = None
+        return result
+
+    # ── Step 3: Create and run the Crew ──────────────────
+    crew = Crew(
+        agents=[classifier_agent, feedback_agent, query_agent, handoff_agent],
+        tasks=[task],
+        process=Process.sequential,
+        verbose=True
+    )
+
+    crew_result = crew.kickoff()
+
+    # ── Step 4: Clean response ────────────────────────────
+    response_text = str(crew_result)
+    disclosure = "AI-Simulated Response — Would route to a Human Representative in a live environment"
+    response_text = response_text.replace(f"**{disclosure}**", "").strip()
+    response_text = response_text.replace(disclosure, "").strip()
+
+    # ── Step 5: Build result dict ─────────────────────────
+    result = {
+        "agent": task.agent.role,
+        "response": response_text,
+        "label": disclosure if sentiment == "Escalation Request" else None,
+        "sentiment": classification.get("sentiment"),
+        "intent": classification.get("intent"),
+        "department": classification.get("department"),
+        "escalation_type": classification.get("escalation_type"),
+        "escalation_trigger": classification.get("escalation_trigger"),
+        "ticket_created": feedback_result.get("ticket_created") if feedback_result else None,
+        "classifier_prompt": classification.get("prompt_sent"),
+        "classifier_response": classification.get("response_returned"),
+        "prompt_sent": task.description,
+        "response_returned": response_text
+    }
+
+    return result

@@ -1,0 +1,33 @@
+<svg width="100%" viewBox="0 0 680 200" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>Voillà — Agentic AI Banking Customer Support</title>
+  <desc>Voillà wordmark with tagline and credit line by Stephanie Wong</desc>
+
+  <style>
+    text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+    @media (prefers-color-scheme: dark) {
+      .primary { fill: #f1f5f9; }
+      .secondary { fill: #94a3b8; }
+      .tertiary { fill: #475569; }
+      .divider { stroke: #1e2a42; }
+    }
+    @media (prefers-color-scheme: light) {
+      .primary { fill: #0f172a; }
+      .secondary { fill: #475569; }
+      .tertiary { fill: #94a3b8; }
+      .divider { stroke: #e2e8f0; }
+    }
+  </style>
+
+  <!-- Wordmark -->
+  <text x="340" y="80" text-anchor="middle" font-size="64" font-weight="500" class="primary" letter-spacing="-1">voillà</text>
+
+  <!-- Tagline -->
+  <text x="340" y="116" text-anchor="middle" font-size="14" font-weight="400" class="secondary" letter-spacing="2">Agentic AI Banking Customer Support</text>
+
+  <!-- Divider line -->
+  <line x1="200" y1="134" x2="480" y2="134" class="divider" stroke-width="0.5"/>
+
+  <!-- Credit line -->
+  <text x="340" y="158" text-anchor="middle" font-size="12" font-weight="400" class="tertiary" letter-spacing="0.5">Designed and engineered by Stephanie Wong</text>
+
+</svg>

@@ -1,0 +1,663 @@
+[
+  {
+    "timestamp": "2026-05-19T18:47:04.355288",
+    "message": "Thanks for sorting out my net banking login issue.",
+    "sentiment": "Positive Feedback",
+    "intent": "General Feedback",
+    "department": "Customer Experience Team",
+    "agent": "Customer Feedback Handler",
+    "ticket_created": null,
+    "escalation_type": null,
+    "response": "You're very welcome! I'm so glad we could help you get back into your net banking smoothly\u2014thank you for taking the time to let us know!",
+    "scores": {
+      "empathy": 100,
+      "clarity": 100,
+      "routing_accuracy": 100,
+      "overall": 100
+    }
+  },
+  {
+    "timestamp": "2026-05-19T18:47:18.989191",
+    "message": "My debit card replacement still hasn't arrived.",
+    "sentiment": "Negative Feedback",
+    "intent": "Complaint",
+    "department": "Customer Relations",
+    "agent": "Customer Feedback Handler",
+    "ticket_created": "842639",
+    "escalation_type": null,
+    "response": "I completely understand how frustrating it is to be waiting for your replacement debit card, especially when you need it for your daily transactions. Rest assured, I've documented your concern and support ticket #842639 has been created to prioritize getting this resolved for you as quickly as possible.",
+    "scores": {
+      "empathy": 100,
+      "clarity": 100,
+      "routing_accuracy": 100,
+      "overall": 100
+    }
+  },
+  {
+    "timestamp": "2026-05-19T18:47:30.341448",
+    "message": "Could you check the status of ticket 650932?",
+    "sentiment": "Query",
+    "intent": "Ticket Inquiry",
+    "department": "Support Team",
+    "agent": "Ticket Query Specialist",
+    "ticket_created": null,
+    "escalation_type": null,
+    "response": "Your ticket #650932 has been resolved and is now closed.",
+    "scores": {
+      "empathy": 0,
+      "clarity": 100,
+      "routing_accuracy": 100,
+      "overall": 67
+    }
+  },
+  {
+    "timestamp": "2026-05-19T18:47:40.844683",
+    "message": "I need to speak to a real person about my account.",
+    "sentiment": "Escalation Request",
+    "intent": "Human Agent Request",
+    "department": "Customer Relations",
+    "agent": "AI-Simulated Human Representative",
+    "ticket_created": null,
+    "escalation_type": "Customer Requested",
+    "response": "**AI-Simulated Response \u2014 Would route to a Human Representative in a live environment**\n\nI completely understand your need to speak with someone directly, and I appreciate you reaching out. A dedicated banking specialist will be connected with you right away to give your account the personal attention it deserves. Your concerns are important to us, and we're here to help resolve this for you immediately.",
+    "scores": {
+      "empathy": 100,
+      "clarity": 100,
+      "routing_accuracy": 100,
+      "overall": 100
+    }
+  },
+  {
+    "timestamp": "2026-05-19T18:54:53.285293",
+    "message": "Thanks for sorting out my net banking login issue.",
+    "sentiment": "Positive Feedback",
+    "intent": "General Feedback",
+    "department": "Customer Experience Team",
+    "agent": "Customer Feedback Handler",
+    "ticket_created": null,
+    "escalation_type": null,
+    "response": "You're very welcome! I'm so glad we could get your net banking login sorted out and working smoothly for you again.",
+    "scores": {
+      "empathy": 67,
+      "clarity": 100,
+      "routing_accuracy": 100,
+      "overall": 89
+    }
+  },
+  {
+    "timestamp": "2026-05-19T18:55:35.053066",
+    "message": "My debit card replacement still hasn't arrived.",
+    "sentiment": "Negative Feedback",
+    "intent": "Complaint",
+    "department": "Customer Relations",
+    "agent": "Customer Feedback Handler",
+    "ticket_created": "986317",
+    "escalation_type": null,
+    "response": "I completely understand how frustrating it is to be waiting for your replacement debit card, especially when you need it for your daily transactions. I want to assure you that we've created support ticket #986317 to prioritize your case, and our team will work quickly to track down your card and get this resolved for you as soon as possible.",
+    "scores": {
+      "empathy": 100,
+      "clarity": 100,
+      "routing_accuracy": 100,
+      "overall": 100
+    }
+  },
+  {
+    "timestamp": "2026-05-19T18:56:10.441620",
+    "message": "Could you check the status of ticket 650932?",
+    "sentiment": "Query",
+    "intent": "Ticket Inquiry",
+    "department": "Support Team",
+    "agent": "Ticket Query Specialist",
+    "ticket_created": null,
+    "escalation_type": null,
+    "response": "Your ticket #650932 has been resolved and is now closed.",
+    "scores": {
+      "empathy": 0,
+      "clarity": 100,
+      "routing_accuracy": 100,
+      "overall": 67
+    }
+  },
+  {
+    "timestamp": "2026-05-19T18:56:34.512077",
+    "message": "I need to speak to a real person about my account.",
+    "sentiment": "Escalation Request",
+    "intent": "Human Agent Request",
+    "department": "Customer Relations",
+    "agent": "AI-Simulated Human Representative",
+    "ticket_created": null,
+    "escalation_type": "Customer Requested",
+    "response": "**AI-Simulated Response \u2014 Would route to a Human Representative in a live environment**\n\nI completely understand your need to speak with someone directly about your account, and I want to make sure you get the personal attention you deserve. A specialist from our team will be connecting with you shortly to address your concerns and provide the support you need. Thank you for your patience, and we're here to help you every step of the way.",
+    "scores": {
+      "empathy": 100,
+      "clarity": 100,
+      "routing_accuracy": 100,
+      "overall": 100
+    }
+  },
+  {
+    "timestamp": "2026-05-19T18:57:28.668391",
+    "message": "My credit card was stolen",
+    "sentiment": "Escalation Request",
+    "intent": "Fraud Report",
+    "department": "Fraud Investigation Team",
+    "agent": "AI-Simulated Human Representative",
+    "ticket_created": null,
+    "escalation_type": "Auto-Detected",
+    "response": "**AI-Simulated Response \u2014 Would route to a Human Representative in a live environment**\n\nI'm so sorry to hear your credit card was stolen \u2013 I understand how stressful and unsettling this must be for you. Your security is our absolute priority, and I'm immediately connecting you with our fraud specialist team who will work with you right now to secure your account, block the stolen card, and protect you from any unauthorized charges. You're in good hands, and we'll get this resolved together.",
+    "scores": {
+      "empathy": 67,
+      "clarity": 75,
+      "routing_accuracy": 100,
+      "overall": 81
+    }
+  },
+  {
+    "timestamp": "2026-05-19T19:28:32.136709",
+    "message": "Your team did a great job helping me with my transfer issue.",
+    "sentiment": "Positive Feedback",
+    "intent": "General Feedback",
+    "department": "Customer Experience Team",
+    "agent": "Customer Feedback Handler",
+    "ticket_created": null,
+    "escalation_type": null,
+    "response": "Thank you so much for taking the time to share this wonderful feedback! I'm absolutely delighted to hear that our team was able to help you resolve your transfer issue \u2013 we truly appreciate you letting us know we made a difference.",
+    "scores": {
+      "empathy": 33,
+      "clarity": 100,
+      "routing_accuracy": 100,
+      "overall": 78
+    }
+  },
+  {
+    "timestamp": "2026-05-19T19:28:41.048196",
+    "message": "I really appreciate how quickly you resolved my account problem.",
+    "sentiment": "Positive Feedback",
+    "intent": "General Feedback",
+    "department": "Customer Experience Team",
+    "agent": "Customer Feedback Handler",
+    "ticket_created": null,
+    "escalation_type": null,
+    "response": "Thank you so much for taking the time to share this! I'm truly delighted we could resolve your account problem quickly and get things back on track for you.",
+    "scores": {
+      "empathy": 0,
+      "clarity": 100,
+      "routing_accuracy": 100,
+      "overall": 67
+    }
+  },
+  {
+    "timestamp": "2026-05-19T19:28:54.650938",
+    "message": "My online banking keeps logging me out automatically.",
+    "sentiment": "Negative Feedback",
+    "intent": "Complaint",
+    "department": "Support Team",
+    "agent": "Customer Feedback Handler",
+    "ticket_created": "411833",
+    "escalation_type": null,
+    "response": "I'm truly sorry to hear that you're experiencing these frustrating automatic logouts from your online banking \u2013 I understand how disruptive this must be when you're trying to manage your finances. Rest assured, we've created support ticket #411833 to address this issue, and our technical team will investigate and work toward a solution for you as quickly as possible.",
+    "scores": {
+      "empathy": 100,
+      "clarity": 100,
+      "routing_accuracy": 100,
+      "overall": 100
+    }
+  },
+  {
+    "timestamp": "2026-05-19T19:29:48.404123",
+    "message": "how long does it take to resolve this? when will i hear back?",
+    "sentiment": "Query",
+    "intent": "Ticket Inquiry",
+    "department": "Support Team",
+    "agent": "Ticket Query Specialist",
+    "ticket_created": null,
+    "escalation_type": null,
+    "response": "I'd be happy to check on your ticket status and provide you with an estimated resolution timeframe\u2014could you please share your ticket number so I can look up the specific details for you?",
+    "scores": {
+      "empathy": 33,
+      "clarity": 100,
+      "routing_accuracy": 100,
+      "overall": 78
+    }
+  },
+  {
+    "timestamp": "2026-05-19T19:30:12.068478",
+    "message": "I'm really happy with how my issue was handled today.",
+    "sentiment": "Positive Feedback",
+    "intent": "General Feedback",
+    "department": "Customer Experience Team",
+    "agent": "Customer Feedback Handler",
+    "ticket_created": null,
+    "escalation_type": null,
+    "response": "Thank you so much for taking the time to share this wonderful feedback! We're absolutely delighted to hear that we were able to resolve your issue to your satisfaction today, and we truly appreciate you banking with us.",
+    "scores": {
+      "empathy": 0,
+      "clarity": 100,
+      "routing_accuracy": 100,
+      "overall": 67
+    }
+  },
+  {
+    "timestamp": "2026-05-19T19:30:47.927175",
+    "message": "What is the current status of my support ticket 784521?",
+    "sentiment": "Query",
+    "intent": "Ticket Inquiry",
+    "department": "Support Team",
+    "agent": "Ticket Query Specialist",
+    "ticket_created": null,
+    "escalation_type": null,
+    "response": "Your support ticket #784521 is currently unresolved and is being actively worked on by our team.",
+    "scores": {
+      "empathy": 33,
+      "clarity": 100,
+      "routing_accuracy": 100,
+      "overall": 78
+    }
+  },
+  {
+    "timestamp": "2026-05-19T19:31:33.622620",
+    "message": "someone hacked my bank account",
+    "sentiment": "Escalation Request",
+    "intent": "Account Takeover",
+    "department": "Fraud Investigation Team",
+    "agent": "AI-Simulated Human Representative",
+    "ticket_created": null,
+    "escalation_type": "Auto-Detected",
+    "response": "**AI-Simulated Response \u2014 Would route to a Human Representative in a live environment**\n\nI completely understand how alarming this must be for you, and I want you to know we're treating this with the utmost urgency. I'm immediately connecting you with our specialized Account Security team who will take swift action to secure your account and investigate this unauthorized access. You're in good hands, and we'll work to resolve this as quickly as possible.",
+    "scores": {
+      "empathy": 33,
+      "clarity": 100,
+      "routing_accuracy": 100,
+      "overall": 78
+    }
+  },
+  {
+    "timestamp": "2026-05-19T19:33:46.533615",
+    "message": "My debit card replacement still hasn't arrived.",
+    "sentiment": "Negative Feedback",
+    "intent": "Complaint",
+    "department": "Customer Relations",
+    "agent": "Customer Feedback Handler",
+    "ticket_created": "183935",
+    "escalation_type": null,
+    "response": "I'm truly sorry to hear that your replacement debit card hasn't arrived yet\u2014I completely understand how frustrating and inconvenient this must be for you. I've noted that support ticket #183935 has been created for your case, and our team will prioritize investigating the status of your card and getting this resolved for you as quickly as possible.",
+    "scores": {
+      "empathy": 100,
+      "clarity": 100,
+      "routing_accuracy": 100,
+      "overall": 100
+    }
+  },
+  {
+    "type": "satisfaction_rating",
+    "rating": 4,
+    "comment": "",
+    "total_messages": 2
+  },
+  {
+    "type": "interaction",
+    "timestamp": "2026-05-19T19:36:14.249372",
+    "message": "hi i forgot my password",
+    "sentiment": "Escalation Request",
+    "intent": "Account Takeover",
+    "department": "Support Team",
+    "agent": "AI-Simulated Human Representative",
+    "ticket_created": null,
+    "escalation_type": "Auto-Detected",
+    "response": "**AI-Simulated Response \u2014 Would route to a Human Representative in a live environment**\n\nI completely understand how concerning this must be, and I want you to know we're taking this very seriously. For your security, I'm immediately connecting you with one of our specialized fraud prevention specialists who will help you securely regain access to your account and ensure everything is protected. You should expect contact from our team within the next 15 minutes\u2014we're here to help you through this.",
+    "scores": {
+      "empathy": 100,
+      "clarity": 100,
+      "routing_accuracy": 100,
+      "overall": 100
+    }
+  },
+  {
+    "type": "satisfaction_rating",
+    "rating": 2,
+    "comment": "",
+    "total_messages": 2
+  },
+  {
+    "type": "interaction",
+    "timestamp": "2026-05-19T19:52:47.722898",
+    "message": "hi i forgot my password",
+    "sentiment": "Query",
+    "intent": "Login or Password Help",
+    "department": "Self-Service Support",
+    "agent": "Ticket Query Specialist",
+    "ticket_created": null,
+    "escalation_type": null,
+    "response": "I'd be happy to check on your ticket status - could you please provide your ticket number so I can look that up for you?",
+    "scores": {
+      "empathy": 33,
+      "clarity": 100,
+      "routing_accuracy": 100,
+      "overall": 78
+    }
+  },
+  {
+    "type": "interaction",
+    "timestamp": "2026-05-19T20:09:42.049061",
+    "message": "i can log in to my account",
+    "sentiment": "Query",
+    "intent": "Login or Password Help",
+    "department": "Self-Service Support",
+    "agent": "OtherHandler",
+    "ticket_created": null,
+    "escalation_type": null,
+    "response": "Hello! I'm glad to hear you can log in to your account successfully! \n\nIf you're experiencing any issues or if you meant to say you're having trouble logging in, I'm here to help. Just let me know if you need assistance with:\n\n- Resetting your password\n- Unlocking your account\n- Updating your username\n- Any other login concerns\n\nOtherwise, if everything is working well, feel free to reach out if you need help with anything else. We're here for you!",
+    "scores": {
+      "empathy": 100,
+      "clarity": 75,
+      "routing_accuracy": 100,
+      "overall": 92
+    }
+  },
+  {
+    "type": "interaction",
+    "timestamp": "2026-05-19T20:10:05.387181",
+    "message": "i cannot log into my account",
+    "sentiment": "Negative Feedback",
+    "intent": "Login or Password Help",
+    "department": "Self-Service Support",
+    "agent": "Customer Feedback Handler",
+    "ticket_created": "510077",
+    "escalation_type": null,
+    "response": "Dear Valued Customer,\n\nThank you for reaching out to us, and I sincerely apologize for the frustration you're experiencing with logging into your account. I completely understand how concerning and inconvenient it is when you're unable to access your banking information when you need it.\n\nPlease be assured that we take this matter seriously and are here to help you resolve this as quickly as possible. I've confirmed that support ticket #510077 has been created for your login issue, and our technical team is now working on it with priority.\n\nOur team will investigate the cause of the login difficulty and reach out to you shortly with a solution. In the meantime, if you need immediate assistance or have any urgent banking needs, please don't hesitate to contact our customer service team directly.\n\nWe truly appreciate your patience and understanding as we work to restore your access. Your security and ability to manage your account smoothly are our top priorities.\n\nWarm regards,\nCustomer Feedback Handler\nBanking Support Team",
+    "scores": {
+      "empathy": 100,
+      "clarity": 75,
+      "routing_accuracy": 100,
+      "overall": 92
+    }
+  },
+  {
+    "type": "interaction",
+    "timestamp": "2026-05-20T23:19:25.876001",
+    "message": "Thanks for sorting out my net banking login issue.",
+    "sentiment": "Positive Feedback",
+    "intent": "General Feedback",
+    "department": "Customer Experience Team",
+    "agent": "Customer Feedback Handler",
+    "ticket_created": null,
+    "escalation_type": null,
+    "response": "Thank you so much for taking the time to share this feedback! \ud83c\udf1f\n\nI'm truly delighted to hear that we were able to get your net banking login sorted out for you. I know how frustrating it can be when you can't access your account, so it's wonderful to know you're back up and running smoothly now.\n\nYour appreciation really means a lot to us \u2013 it's feedback like yours that reminds us why we love what we do. If you ever need assistance with anything else, whether it's net banking or any other service, please don't hesitate to reach out. We're always here to help!\n\nWishing you smooth banking ahead, and thanks again for being such a valued customer! \ud83d\ude0a\n\nWarm regards,\nCustomer Feedback Team",
+    "scores": {
+      "empathy": 67,
+      "clarity": 75,
+      "routing_accuracy": 100,
+      "overall": 81
+    }
+  },
+  {
+    "type": "interaction",
+    "timestamp": "2026-05-20T23:25:22.024835",
+    "message": "My debit card replacement still hasn't arrived",
+    "sentiment": "Negative Feedback",
+    "intent": "Card Issue",
+    "department": "Operations Team",
+    "agent": "Customer Feedback Handler",
+    "ticket_created": "995416",
+    "escalation_type": null,
+    "response": "I completely understand how frustrating it is to be waiting for your replacement debit card, especially when you need access to your funds. I've documented your concern under ticket #995416, and our team will prioritize investigating the status of your card and reach out to you with an update shortly. We'll make sure this gets resolved for you as quickly as possible.",
+    "scores": {
+      "empathy": 100,
+      "clarity": 100,
+      "routing_accuracy": 100,
+      "overall": 100
+    }
+  },
+  {
+    "type": "interaction",
+    "timestamp": "2026-05-20T23:26:15.762991",
+    "message": "Could you check the status of ticket 650932",
+    "sentiment": "Query",
+    "intent": "Ticket Status Inquiry",
+    "department": "General Support",
+    "agent": "Ticket Query Specialist",
+    "ticket_created": null,
+    "escalation_type": null,
+    "response": "Your ticket #650932 has been marked as resolved. If you have any remaining questions about this issue or need further assistance, please let me know.",
+    "scores": {
+      "empathy": 0,
+      "clarity": 100,
+      "routing_accuracy": 100,
+      "overall": 67
+    }
+  },
+  {
+    "type": "interaction",
+    "timestamp": "2026-05-20T23:27:04.559407",
+    "message": "I need to speak to a real person about my account.",
+    "sentiment": "Escalation Request",
+    "intent": "Human Agent Request",
+    "department": "Customer Relations",
+    "agent": "AI-Simulated Human Representative",
+    "ticket_created": null,
+    "escalation_type": "Customer Requested",
+    "response": "I completely understand your need to speak with someone directly, and I want you to know that I'm here to make sure you get the personal attention your account matters deserve.\n\nYour request has been prioritized, and I'm connecting you with one of our senior banking specialists right now. They'll have full access to your account details and the authority to resolve whatever concerns you have today.\n\nWhile we're getting you connected, please know that we take your time seriously. If there's anything specific you'd like the specialist to focus on when they reach out, feel free to share those details, and I'll make sure they're fully briefed before speaking with you.\n\nYou should expect contact within the next few minutes. We're committed to making this right for you.",
+    "scores": {
+      "empathy": 67,
+      "clarity": 75,
+      "routing_accuracy": 100,
+      "overall": 81
+    }
+  },
+  {
+    "type": "interaction",
+    "timestamp": "2026-05-20T23:31:23.102779",
+    "message": "I need to speak to a real person about my account.",
+    "sentiment": "Escalation Request",
+    "intent": "Human Agent Request",
+    "department": "Customer Relations",
+    "agent": "AI-Simulated Human Representative",
+    "ticket_created": null,
+    "escalation_type": "Customer Requested",
+    "response": "I completely understand your need to speak with someone directly about your account, and I want you to know that I'm making sure your request gets the immediate attention it deserves. A specialist from our team will be reaching out to you shortly to discuss your specific concerns and work through everything with you personally. You have my assurance that we're treating this with priority and will make sure you get the support you need.",
+    "scores": {
+      "empathy": 100,
+      "clarity": 100,
+      "routing_accuracy": 100,
+      "overall": 100
+    }
+  },
+  {
+    "type": "interaction",
+    "timestamp": "2026-05-20T23:32:40.126266",
+    "message": "There is an unauthorized charge on my account I did not make.\"",
+    "sentiment": "Escalation Request",
+    "intent": "Fraud Claim",
+    "department": "Fraud Investigation Team",
+    "agent": "AI-Simulated Human Representative",
+    "ticket_created": null,
+    "escalation_type": "Auto-Detected",
+    "response": "I completely understand how concerning it is to see a charge you didn't authorize, and I want you to know we take this very seriously. I'm immediately connecting you with our fraud protection specialist who will work with you to investigate this transaction, secure your account, and ensure you're protected. You're in good hands, and we'll get to the bottom of this right away.",
+    "scores": {
+      "empathy": 67,
+      "clarity": 100,
+      "routing_accuracy": 100,
+      "overall": 89
+    }
+  },
+  {
+    "type": "interaction",
+    "timestamp": "2026-05-20T23:38:16.128230",
+    "message": "Thanks for sorting out my net banking login issue",
+    "sentiment": "Positive Feedback",
+    "intent": "General Feedback",
+    "department": "Customer Experience Team",
+    "agent": "Customer Feedback Handler",
+    "ticket_created": null,
+    "escalation_type": null,
+    "response": "I'm so glad we could help you get back into your net banking account! Thank you for taking the time to let us know - it really means a lot to hear when we've been able to resolve something for you. If you need anything else in the future, please don't hesitate to reach out.",
+    "scores": {
+      "empathy": 67,
+      "clarity": 100,
+      "routing_accuracy": 100,
+      "overall": 89
+    }
+  },
+  {
+    "type": "interaction",
+    "timestamp": "2026-05-20T23:38:34.110820",
+    "message": "My debit card replacement still hasn't arrived.",
+    "sentiment": "Negative Feedback",
+    "intent": "Card Issue",
+    "department": "Operations Team",
+    "agent": "Customer Feedback Handler",
+    "ticket_created": "816415",
+    "escalation_type": null,
+    "response": "I completely understand how frustrating it is to be waiting for your replacement debit card, especially when you need access to your funds. I've confirmed that support ticket #816415 has been created for your case, and our card services team will prioritize reviewing your situation and providing you with an update on the status of your replacement card. We're committed to getting this resolved for you as quickly as possible.",
+    "scores": {
+      "empathy": 100,
+      "clarity": 100,
+      "routing_accuracy": 100,
+      "overall": 100
+    }
+  },
+  {
+    "type": "interaction",
+    "timestamp": "2026-05-20T23:38:55.877056",
+    "message": "Could you check the status of ticket 650932?",
+    "sentiment": "Query",
+    "intent": "Ticket Status Inquiry",
+    "department": "General Support",
+    "agent": "Ticket Query Specialist",
+    "ticket_created": null,
+    "escalation_type": null,
+    "response": "Your ticket #650932 has been resolved. If you have any remaining questions about this matter or need further assistance, please let us know.",
+    "scores": {
+      "empathy": 0,
+      "clarity": 100,
+      "routing_accuracy": 100,
+      "overall": 67
+    }
+  },
+  {
+    "type": "interaction",
+    "timestamp": "2026-05-20T23:39:09.765622",
+    "message": "I need to speak to a real person about my account.",
+    "sentiment": "Escalation Request",
+    "intent": "Human Agent Request",
+    "department": "Customer Relations",
+    "agent": "AI-Simulated Human Representative",
+    "ticket_created": null,
+    "escalation_type": "Customer Requested",
+    "response": "I completely understand you need to speak with someone directly about your account, and I want to assure you that your request is being treated with priority. A specialist from our team will be reaching out to you shortly to give your situation the personal attention it deserves. You can feel confident that we're here to help resolve whatever concerns you have with your account.",
+    "scores": {
+      "empathy": 100,
+      "clarity": 100,
+      "routing_accuracy": 100,
+      "overall": 100
+    }
+  },
+  {
+    "type": "interaction",
+    "timestamp": "2026-05-20T23:39:27.256199",
+    "message": "There is an unauthorized charge on my account I did not make.",
+    "sentiment": "Escalation Request",
+    "intent": "Fraud Claim",
+    "department": "Fraud Investigation Team",
+    "agent": "AI-Simulated Human Representative",
+    "ticket_created": null,
+    "escalation_type": "Auto-Detected",
+    "response": "I completely understand how concerning it is to see a charge you didn't authorize on your account, and I want you to know we're taking this very seriously. I'm immediately connecting you with our fraud specialist team who will prioritize your case and work with you to investigate this charge and protect your account. You're in good hands, and we'll make sure this gets resolved for you.",
+    "scores": {
+      "empathy": 67,
+      "clarity": 100,
+      "routing_accuracy": 100,
+      "overall": 89
+    }
+  },
+  {
+    "type": "interaction",
+    "timestamp": "2026-05-20T23:44:45.339488",
+    "message": "someone hacked my account",
+    "sentiment": "Escalation Request",
+    "intent": "Account Compromised",
+    "department": "Security Team",
+    "agent": "AI-Simulated Human Representative",
+    "ticket_created": null,
+    "escalation_type": "Auto-Detected",
+    "response": "I understand how alarming this must be for you, and I want you to know we're treating this with the highest priority. I'm immediately connecting you with our security specialist team who will work to secure your account and investigate this situation right away. You've done the right thing by reaching out to us immediately, and we're going to take care of this together.",
+    "scores": {
+      "empathy": 33,
+      "clarity": 100,
+      "routing_accuracy": 100,
+      "overall": 78
+    }
+  },
+  {
+    "type": "satisfaction_rating",
+    "rating": 2,
+    "comment": "",
+    "total_messages": 2
+  },
+  {
+    "type": "interaction",
+    "timestamp": "2026-05-20T23:54:31.224038",
+    "message": "i cant log in",
+    "sentiment": "Negative Feedback",
+    "intent": "Login or Password Help",
+    "department": "Self-Service Support",
+    "agent": "Self-Service Handler",
+    "ticket_created": null,
+    "escalation_type": null,
+    "response": "I can help you get back into your account. Let's try a few things:\n\nFirst, verify you're using the correct username. If you've forgotten it, look for the \"Forgot Username\" link on the login page, or check any recent statements or emails from us where it may be listed.\n\nIf you're certain about your username but your password isn't working, click \"Forgot Password\" on the login page to reset it. You'll need access to the email or phone number we have on file to receive a verification code.\n\nAlso check that:\n- Caps Lock isn't on, as passwords are case-sensitive\n- You're using our official website or app, not a saved link that might be outdated\n- Your browser is up to date\n\nIf you've tried these steps and still can't access your account, please call the number on the back of your debit card so we can verify your identity and resolve this right away. For security reasons, there are some account issues we can only address over the phone or in person at a branch.",
+    "scores": {
+      "empathy": 33,
+      "clarity": 75,
+      "routing_accuracy": 100,
+      "overall": 69
+    }
+  },
+  {
+    "type": "satisfaction_rating",
+    "rating": 2,
+    "comment": "",
+    "total_messages": 2
+  },
+  {
+    "type": "interaction",
+    "timestamp": "2026-05-20T23:59:38.230564",
+    "message": "fforgot my password",
+    "sentiment": "Query",
+    "intent": "Login or Password Help",
+    "department": "Self-Service Support",
+    "agent": "Self-Service Handler",
+    "ticket_created": null,
+    "escalation_type": null,
+    "response": "I can help you reset your password. Here are the steps:\n\n1. Go to our bank's website or mobile app login page\n2. Click on \"Forgot Password\" or \"Reset Password\" below the login fields\n3. Enter your username or registered email address\n4. You'll receive a verification code via email or text message\n5. Follow the prompts to create a new password\n\nMake sure your new password meets our security requirements - typically 8-12 characters with a mix of uppercase, lowercase, numbers, and special characters.\n\nIf you're not receiving the reset email or text, check your spam folder. If you continue to have trouble, please call the number on the back of your debit card, and we can verify your identity and reset your password over the phone.",
+    "scores": {
+      "empathy": 33,
+      "clarity": 75,
+      "routing_accuracy": 100,
+      "overall": 69
+    }
+  },
+  {
+    "type": "satisfaction_rating",
+    "rating": 1,
+    "comment": "",
+    "total_messages": 2
+  },
+  {
+    "type": "interaction",
+    "timestamp": "2026-05-21T00:01:13.689018",
+    "message": "I'm really happy with how my issue was handled today.",
+    "sentiment": "Positive Feedback",
+    "intent": "General Feedback",
+    "department": "Customer Experience Team",
+    "agent": "Customer Feedback Handler",
+    "ticket_created": null,
+    "escalation_type": null,
+    "response": "Thank you so much for taking the time to share this with us. I'm really glad to hear that we were able to resolve your issue to your satisfaction today. Your feedback means a lot and helps us ensure we're providing the level of service you deserve.",
+    "scores": {
+      "empathy": 67,
+      "clarity": 100,
+      "routing_accuracy": 100,
+      "overall": 89
+    }
+  }
+]
