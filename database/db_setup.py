@@ -1,7 +1,7 @@
 # database/db_setup.py
 # Creates and seeds the SQLite support_tickets database
 # Agentic AI Banking Customer Support
-# Purdue University (Online) via Simplilearn
+# Agentic AI Banking Capstone Project 2026: Engineered and Designed by Stephanie Wong 
 
 import sqlite3
 from datetime import datetime

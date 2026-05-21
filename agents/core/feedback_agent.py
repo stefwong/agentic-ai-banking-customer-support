@@ -1,7 +1,7 @@
 # agents/core/feedback_agent.py
 # Feedback Handler Agent — handles positive and negative feedback
 # Agentic AI Banking Customer Support
-# Purdue University (Online) via Simplilearn
+# Agentic AI Banking Capstone Project 2026: Engineered and Designed by Stephanie Wong 
 
 import os
 import random

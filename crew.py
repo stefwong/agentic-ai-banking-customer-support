@@ -2,7 +2,7 @@
 # CrewAI orchestration — wires all agents together
 # Uses official CrewAI Agent, Task, and Crew structure with kickoff()
 # Agentic AI Banking Customer Support
-# Stephanie Wong Agentic AI for Banking Capstone Project 2026
+# Agentic AI Banking Capstone Project 2026: Engineered and Designed by Stephanie Wong 
 
 import os
 import anthropic
@@ -24,10 +24,17 @@ claude_llm = "anthropic/claude-sonnet-4-5"
 
 # ── Tier 3 intents that should never create a ticket ─────
 SELF_SERVICE_INTENTS = [
+    "Payment or Card Declined",
     "Login or Password Help",
     "Balance or Transaction Inquiry",
+    "Ticket Status Inquiry",
     "Card Activation",
     "Account Information Update",
+    "Transfer Processing Time",
+    "Fee or Interest Rate Question",
+    "How to Set Up Direct Deposit",
+    "How to Dispute a Charge",
+    "App or Website Troubleshooting",
     "Product Question",
     "General Feedback",
 ]

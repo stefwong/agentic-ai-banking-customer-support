@@ -1,7 +1,7 @@
 # agents/core/query_agent.py
 # Query Handler Agent — looks up ticket status from database
 # Agentic AI Banking Customer Support
-# Purdue University (Online) via Simplilearn
+# Agentic AI Banking Capstone Project 2026: Engineered and Designed by Stephanie Wong 
 
 import os
 import re

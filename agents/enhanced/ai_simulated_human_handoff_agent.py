@@ -3,7 +3,7 @@
 # Simulates escalation to a human representative
 # In a live environment this would route to a real human agent
 # Agentic AI Banking Customer Support
-# Purdue University (Online) via Simplilearn
+# Agentic AI Banking Capstone Project 2026: Engineered and Designed by Stephanie Wong 
 
 import os
 import anthropic

@@ -1,7 +1,6 @@
 # app.py
-# Streamlit UI — wired to real agents via crew.py
-# Agentic AI Banking Customer Support
-# Stephanie Wong Agentic AI for Banking Capstone Project 2026
+# Streamlit UI — wired to AI agents via crew.py
+# Agentic AI Banking Capstone Project 2026: Engineered and Designed by Stephanie Wong
 
 import os
 import json
@@ -13,12 +12,11 @@ from evaluation import log_interaction, get_evaluation_summary
 
 # ── Page config ──────────────────────────────────────────
 st.set_page_config(
-    page_title="Agentic AI Banking Customer Support",
-    page_icon="🏦",
+    page_title="Voillà — Agentic AI Banking Customer Support",
     layout="wide"
 )
 
-# ── Responsive CSS ────────────────────────────────────────
+# ── CSS ───────────────────────────────────────────────────
 st.markdown("""
     <style>
     .main .block-container {
@@ -26,6 +24,7 @@ st.markdown("""
         padding-right: 2rem;
         max-width: 900px;
         margin: auto;
+        padding-top: 0.5rem;
     }
     table {
         width: 100%;
@@ -36,6 +35,13 @@ st.markdown("""
         white-space: normal !important;
         word-wrap: break-word !important;
         max-width: 200px;
+    }
+    footer {visibility: hidden;}
+    [data-testid="stChatMessageAvatarUser"] {
+        background-color: #1A6FBF !important;
+    }
+    [data-testid="stChatMessageAvatarAssistant"] {
+        background-color: #1E8A4A !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -75,9 +81,16 @@ ESCALATION_MESSAGES = [
     "I need a real human agent, not an automated system.",
 ]
 
-# ── Title ─────────────────────────────────────────────────
-st.title("🏦 Agentic AI Banking Customer Support")
-st.caption("Purdue University (Online) via Simplilearn — Applied Generative AI Specialisation Capstone")
+# ── Logo ──────────────────────────────────────────────────
+col1, col2, col3 = st.columns([1, 2, 1])
+with col2:
+    try:
+        st.image("assets/voilla_logo.png", use_container_width=True)
+    except:
+        st.title("Voillà")
+
+st.markdown("<p style='text-align:center; color:#334155; font-size:14px; margin-top:-10px;'>Agentic AI Banking Customer Support</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align:center; color:#64748b; font-size:12px; margin-top:-8px;'>Designed and engineered by Stephanie Wong</p>", unsafe_allow_html=True)
 
 st.divider()
 
@@ -103,17 +116,34 @@ if "rating_submitted" not in st.session_state:
 if "rating_message" not in st.session_state:
     st.session_state.rating_message = ""
 
+if "greeting_shown" not in st.session_state:
+    st.session_state.greeting_shown = False
+
+# ── Add greeting as first message once per session ────────
+if not st.session_state.greeting_shown:
+    st.session_state.messages.append({
+        "role": "assistant",
+        "content": "Hi, I'm an AI Customer Service Agent. How can I help you?",
+        "label": None,
+        "is_greeting": True
+    })
+    st.session_state.greeting_shown = True
+
 # ── Component B: Conversation view ───────────────────────
-st.subheader("Conversation")
+st.subheader("Customer Service Help Chat")
 
 for message in st.session_state.messages:
+    if message.get("is_divider"):
+        st.markdown("---")
+        st.caption("— New conversation started —")
+        continue
     with st.chat_message(message["role"]):
         if message.get("label"):
             st.caption(f"🟢 {message['label']}")
         st.write(message["content"])
 
 # ── End Conversation button ───────────────────────────────
-if st.session_state.messages and not st.session_state.conversation_ended:
+if len(st.session_state.messages) > 1 and not st.session_state.conversation_ended:
     col_spacer, col_btn = st.columns([4, 1])
     with col_btn:
         if st.button("End Conversation", type="secondary"):
@@ -140,13 +170,12 @@ if st.session_state.conversation_ended and not st.session_state.rating_submitted
         st.session_state.rating_submitted = True
 
         if score <= 2:
-                st.session_state.rating_message = "We're sorry your experience didn't meet expectations. Your feedback has been recorded and will be used to improve our service."
+            st.session_state.rating_message = "We're sorry your experience didn't meet expectations. Your feedback has been recorded and will be used to improve our service."
         elif score == 3:
             st.session_state.rating_message = "Thank you for your feedback. We'll use this to improve our service."
         else:
             st.session_state.rating_message = "Thank you! We're glad we could help today."
 
-        # Log rating to agent_log.json
         log_path = "logs/agent_log.json"
         if os.path.exists(log_path):
             with open(log_path, "r") as f:
@@ -166,7 +195,7 @@ if st.session_state.conversation_ended and not st.session_state.rating_submitted
 
         st.rerun()
 
-# ── Rating confirmation message ───────────────────────────
+# ── Rating confirmation + Start New Conversation ──────────
 if st.session_state.rating_submitted:
     if st.session_state.satisfaction_rating <= 2:
         st.error(f"{'⭐' * st.session_state.satisfaction_rating} — {st.session_state.get('rating_message', '')}")
@@ -174,6 +203,17 @@ if st.session_state.rating_submitted:
         st.warning(f"{'⭐' * st.session_state.satisfaction_rating} — {st.session_state.get('rating_message', '')}")
     else:
         st.success(f"{'⭐' * st.session_state.satisfaction_rating} — {st.session_state.get('rating_message', '')}")
+
+    st.divider()
+    if st.button("Start New Conversation", type="primary"):
+        st.session_state.messages.append({"is_divider": True})
+        st.session_state.conversation_ended = False
+        st.session_state.rating_submitted = False
+        st.session_state.satisfaction_rating = None
+        st.session_state.rating_message = ""
+        st.session_state.last_trace = None
+        st.session_state.routing_log = []
+        st.rerun()
 
 # ── Component C + D: Input and submit ────────────────────
 if not st.session_state.conversation_ended:
@@ -183,6 +223,16 @@ else:
 
 def process_message(message: str):
     """Runs message through crew and updates session state."""
+
+    if st.session_state.get("conversation_ended"):
+        st.session_state.messages.append({"is_divider": True})
+        st.session_state.conversation_ended = False
+        st.session_state.rating_submitted = False
+        st.session_state.satisfaction_rating = None
+        st.session_state.rating_message = ""
+        st.session_state.last_trace = None
+        st.session_state.routing_log = []
+
     with st.spinner("Processing your message..."):
         result = run_crew(message)
 
@@ -191,7 +241,6 @@ def process_message(message: str):
         "content": message
     })
 
-    # Clean response — remove disclosure label from body if present
     response_text = result["response"]
     disclosure = "AI-Simulated Response — Would route to a Human Representative in a live environment"
     response_text = response_text.replace(f"**{disclosure}**", "").strip()
@@ -223,8 +272,30 @@ st.divider()
 
 with st.expander("🔧 Engineering Log & Testing Panel"):
 
-    # ── Section 1: Current interaction trace ──────────────
-    st.subheader("Section 1 — Current Interaction Trace")
+    # ── Test Scenarios first ──────────────────────────────
+    st.subheader("Test Scenarios")
+    st.write("Click a button to send a randomized test banking customer service message:")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        if st.button("✅ Test Positive Feedback"):
+            process_message(random.choice(POSITIVE_MESSAGES))
+
+        if st.button("❌ Test Negative Feedback"):
+            process_message(random.choice(NEGATIVE_MESSAGES))
+
+    with col2:
+        if st.button("🔍 Test Ticket Query"):
+            process_message(random.choice(QUERY_MESSAGES))
+
+        if st.button("🤝 Test AI-Simulated Human Handoff"):
+            process_message(random.choice(ESCALATION_MESSAGES))
+
+    st.divider()
+
+    # ── Current Interaction Trace ─────────────────────────
+    st.subheader("Current Interaction Trace")
 
     if st.session_state.last_trace:
         trace = st.session_state.last_trace
@@ -254,12 +325,12 @@ with st.expander("🔧 Engineering Log & Testing Panel"):
             st.code(str(trace.get("response_returned", "—")), language="text")
 
     else:
-        st.info("No messages processed yet. Send a message or use a test button below.")
+        st.info("No messages processed yet. Send a message or use a test button above.")
 
     st.divider()
 
-    # ── Section 2: Ticket log table ───────────────────────
-    st.subheader("Section 2 — Ticket Log")
+    # ── Ticket Log ────────────────────────────────────────
+    st.subheader("Ticket Log")
 
     tickets = get_all_tickets()
     if tickets:
@@ -308,24 +379,16 @@ with st.expander("🔧 Engineering Log & Testing Panel"):
                     "No agent prompt adjustments required."
                 )
 
-    st.divider()
-
-    # ── Section 3: Test scenario buttons ─────────────────
-    st.subheader("Section 3 — Test Scenarios")
-    st.write("Click a button to fire a randomized test message:")
-
-    col1, col2 = st.columns(2)
-
-    with col1:
-        if st.button("✅ Test Positive Feedback"):
-            process_message(random.choice(POSITIVE_MESSAGES))
-
-        if st.button("❌ Test Negative Feedback"):
-            process_message(random.choice(NEGATIVE_MESSAGES))
-
-    with col2:
-        if st.button("🔍 Test Ticket Query"):
-            process_message(random.choice(QUERY_MESSAGES))
-
-        if st.button("🤝 Test AI-Simulated Human Handoff"):
-            process_message(random.choice(ESCALATION_MESSAGES))
+            # ── Rating history log ────────────────────────
+            st.write("**Rating History:**")
+            rating_rows = []
+            for l in all_logs:
+                if l.get("type") == "satisfaction_rating":
+                    rating_rows.append({
+                        "Rating": "⭐" * l["rating"],
+                        "Score": f"{l['rating']}/5",
+                        "Comment": l.get("comment", "") or "—",
+                        "Messages in session": l.get("total_messages", "—")
+                    })
+            if rating_rows:
+                st.table(rating_rows)

@@ -1,8 +1,6 @@
 # agents/core/classifier_agent.py
 # Classifier Agent — routes all incoming customer messages
-# Uses banking intent taxonomy with tier-based routing
-# Agentic AI Banking Customer Support
-# Purdue University (Online) via Simplilearn
+# Agentic AI Banking Capstone Project 2026: Engineered and Designed by Stephanie Wong
 
 import os
 import json
@@ -27,7 +25,7 @@ ESCALATION_PHRASES = [
     "representative",
 ]
 
-# ── Tier definitions for routing ──────────────────────────
+# ── Tier definitions ──────────────────────────────────────
 TIER_1_INTENTS = [
     "Fraud Claim",
     "Account Compromised",
@@ -35,26 +33,31 @@ TIER_1_INTENTS = [
 ]
 
 TIER_2_INTENTS = [
-    "Card Dispute",
-    "Card Issue",
-    "Transfer Issue",
+    "Card Not Arrived",
+    "Unresolved Transfer Issue",
+    "Unresolved Account Access Issue",
+    "Disputed Charge",
     "Loan or Mortgage Issue",
-    "Fee Complaint",
-    "Service Complaint",
+    "Persistent Service Failure",
 ]
 
 TIER_3_INTENTS = [
+    "Payment or Card Declined",
     "Login or Password Help",
     "Balance or Transaction Inquiry",
     "Ticket Status Inquiry",
     "Card Activation",
     "Account Information Update",
+    "Transfer Processing Time",
+    "Fee or Interest Rate Question",
+    "How to Set Up Direct Deposit",
+    "How to Dispute a Charge",
+    "App or Website Troubleshooting",
     "Product Question",
     "General Feedback",
 ]
 
 def get_tier(intent: str) -> int:
-    """Returns the tier number for a given intent."""
     if intent in TIER_1_INTENTS:
         return 1
     elif intent in TIER_2_INTENTS:
@@ -62,10 +65,9 @@ def get_tier(intent: str) -> int:
     elif intent in TIER_3_INTENTS:
         return 3
     else:
-        return 3  # Default to Tier 3 for unknown intents
+        return 3
 
 def check_explicit_escalation(message: str) -> bool:
-    """Check if customer is explicitly requesting a human."""
     message_lower = message.lower()
     return any(phrase in message_lower for phrase in ESCALATION_PHRASES)
 
@@ -92,45 +94,60 @@ def classify_message(message: str) -> dict:
     prompt = (
         f'You are an expert banking customer support classifier at a major US bank.\n\n'
         f'Analyze this customer message: "{message}"\n\n'
-        f'Classify it using this exact banking intent taxonomy:\n\n'
+        f'Classify using this banking intent taxonomy:\n\n'
         f'TIER 1 — Always escalate to human (fraud, security, legal):\n'
-        f'- Fraud Claim: unauthorized transaction, someone used my card/account without permission\n'
+        f'- Fraud Claim: unauthorized transaction, someone used account without permission\n'
         f'- Account Compromised: suspicious login, someone changed account info, hacked\n'
         f'- Legal or Regulatory Threat: mentions lawyer, CFPB, BBB, lawsuit, legal action\n\n'
-        f'TIER 2 — AI handles, creates support ticket:\n'
-        f'- Card Dispute: charge I want to dispute, incorrect charge, want money back\n'
-        f'- Card Issue: card not arrived, card declined, card blocked, card damaged\n'
-        f'- Transfer Issue: pending transfer, failed transfer, wrong amount sent, wire issue\n'
-        f'- Loan or Mortgage Issue: payment not applied, rate concern, loan question\n'
-        f'- Fee Complaint: overdraft fee, unexpected charge, fee waiver request\n'
-        f'- Service Complaint: app not working, website error, general dissatisfaction\n\n'
-        f'TIER 3 — AI handles directly, no ticket needed:\n'
-        f'- Login or Password Help: forgot password, locked out, cant access account\n'
+        f'TIER 2 — Create support ticket, needs follow up:\n'
+        f'- Card Not Arrived: card ordered but not received after expected delivery window\n'
+        f'- Unresolved Transfer Issue: transfer pending more than 3 business days\n'
+        f'- Unresolved Account Access Issue: cannot access account after trying self-service steps\n'
+        f'- Disputed Charge: specific charge customer wants to formally dispute\n'
+        f'- Loan or Mortgage Issue: payment not applied, rate concern, loan dispute\n'
+        f'- Persistent Service Failure: issue that has already been reported and not resolved\n\n'
+        f'TIER 3 — Self-service, answer directly, no ticket needed:\n'
+        f'- Payment or Card Declined: payment or card was declined — explain common reasons and steps\n'
+        f'- Login or Password Help: forgot password, locked out — provide reset instructions\n'
         f'- Balance or Transaction Inquiry: balance check, recent transactions, statement\n'
         f'- Ticket Status Inquiry: check status of existing support ticket\n'
-        f'- Card Activation: activate new card, new card setup\n'
-        f'- Account Information Update: change address, phone, email, preferences\n'
-        f'- Product Question: how does X work, rates, fees, account types, features\n'
+        f'- Card Activation: how to activate new card\n'
+        f'- Account Information Update: change address, phone, email\n'
+        f'- Transfer Processing Time: transfer not showing yet — explain processing times\n'
+        f'- Fee or Interest Rate Question: explain fee structure or rates\n'
+        f'- How to Set Up Direct Deposit: step by step instructions\n'
+        f'- How to Dispute a Charge: explain the dispute process and steps\n'
+        f'- App or Website Troubleshooting: app not working, website error — troubleshooting steps\n'
+        f'- Product Question: how does X work, account types, features\n'
         f'- General Feedback: positive experience, compliment, suggestion\n\n'
         f'Department mapping:\n'
-        f'- Tier 1 Fraud Claim → Fraud Investigation Team\n'
-        f'- Tier 1 Account Compromised → Security Team\n'
-        f'- Tier 1 Legal or Regulatory Threat → Legal and Compliance\n'
-        f'- Card Dispute → Chargeback Team\n'
-        f'- Card Issue, Transfer Issue → Operations Team\n'
+        f'- Fraud Claim → Fraud Investigation Team\n'
+        f'- Account Compromised → Security Team\n'
+        f'- Legal or Regulatory Threat → Legal and Compliance\n'
+        f'- Card Not Arrived, Unresolved Transfer Issue → Operations Team\n'
+        f'- Disputed Charge → Chargeback Team\n'
         f'- Loan or Mortgage Issue → Lending Team\n'
-        f'- Fee Complaint, Service Complaint → Customer Relations\n'
+        f'- Persistent Service Failure, Unresolved Account Access Issue → Customer Relations\n'
+        f'- Payment or Card Declined, App or Website Troubleshooting → Self-Service Support\n'
         f'- Login or Password Help, Card Activation, Account Information Update → Self-Service Support\n'
-        f'- Balance or Transaction Inquiry, Ticket Status Inquiry → General Support\n'
+        f'- Balance or Transaction Inquiry, Ticket Status Inquiry, Transfer Processing Time → General Support\n'
+        f'- Fee or Interest Rate Question, How to Set Up Direct Deposit, How to Dispute a Charge → General Support\n'
         f'- Product Question → Product Support\n'
         f'- General Feedback → Customer Experience Team\n\n'
-        f'If the message does not clearly fit any category, use your general banking customer '
-        f'service knowledge to pick the closest match and classify accordingly.\n\n'
-        f'Return ONLY a valid JSON object with no markdown, no explanation:\n'
-        f'{{"intent": "exact intent name from taxonomy", "department": "department name", "sentiment": "Positive Feedback or Negative Feedback or Query"}}\n\n'
+        f'Important distinctions:\n'
+        f'- "my payment was declined" or "card declined" = Payment or Card Declined (Tier 3) NOT a complaint\n'
+        f'- "my card hasnt arrived" after reasonable time = Card Not Arrived (Tier 2)\n'
+        f'- "transfer not showing" same day or next day = Transfer Processing Time (Tier 3)\n'
+        f'- "transfer still pending after 3 days" = Unresolved Transfer Issue (Tier 2)\n'
+        f'- "forgot password" or "locked out" = Login or Password Help (Tier 3) NOT Account Compromised\n'
+        f'- Account Compromised = someone ELSE accessed the account\n\n'
+        f'If message does not clearly fit, use banking knowledge to pick closest match.\n\n'
+        f'Return ONLY valid JSON, no markdown, no explanation:\n'
+        f'{{"intent": "exact intent name from taxonomy", "department": "department name", '
+        f'"sentiment": "Positive Feedback or Negative Feedback or Query"}}\n\n'
         f'Sentiment rules:\n'
-        f'- Gratitude, satisfaction, compliment → Positive Feedback\n'
-        f'- Problem, complaint, issue, frustration → Negative Feedback\n'
+        f'- Gratitude, satisfaction → Positive Feedback\n'
+        f'- Problem, complaint, issue → Negative Feedback\n'
         f'- Question, inquiry, status check → Query'
     )
 
@@ -147,7 +164,6 @@ def classify_message(message: str) -> dict:
         clean_text = response_text.replace("```json", "").replace("```", "").strip()
         result = json.loads(clean_text)
     except json.JSONDecodeError:
-        # Fallback — let Claude handle it as general banking query
         result = {
             "sentiment": "Query",
             "intent": "Product Question",
@@ -181,11 +197,14 @@ if __name__ == "__main__":
         "My debit card replacement still hasn't arrived.",
         "Could you check the status of ticket 650932?",
         "I need to speak to a real person about my account.",
-        "Hi I forgot my password.",
+        "My payment was declined.",
+        "I forgot my password.",
         "There is an unauthorized charge on my account.",
         "I am going to contact my lawyer if this is not resolved.",
-        "How do I activate my new debit card?",
-        "What are your current savings account interest rates?",
+        "My transfer has been pending for 4 days.",
+        "My transfer isn't showing yet but I just sent it.",
+        "How do I set up direct deposit?",
+        "The app keeps crashing.",
     ]
 
     for msg in test_messages:
