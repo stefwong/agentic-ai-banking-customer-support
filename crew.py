@@ -1,8 +1,6 @@
 # crew.py
 # CrewAI orchestration — wires all agents together
-# Uses official CrewAI Agent, Task, and Crew structure with kickoff()
-# Agentic AI Banking Customer Support
-# Agentic AI Banking Capstone Project 2026: Engineered and Designed by Stephanie Wong 
+# Agentic AI Banking Capstone Project 2026: Engineered and Designed by Stephanie Wong
 
 import os
 import anthropic
@@ -16,13 +14,13 @@ from database.db_setup import setup_database
 # Ensure database is set up on startup
 setup_database()
 
-# ── Initialize Anthropic client for Self-Service handler ──
+# ── Initialize Anthropic client ───────────────────────────
 anthropic_client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
 
 # ── LLM model string for CrewAI ──────────────────────────
 claude_llm = "anthropic/claude-sonnet-4-5"
 
-# ── Tier 3 intents that should never create a ticket ─────
+# ── Self-service intents — no ticket needed ───────────────
 SELF_SERVICE_INTENTS = [
     "Payment or Card Declined",
     "Login or Password Help",
@@ -38,20 +36,6 @@ SELF_SERVICE_INTENTS = [
     "Product Question",
     "General Feedback",
 ]
-
-# ── Shared response rules ─────────────────────────────────
-RESPONSE_RULES = (
-    f'Important rules:\n'
-    f'- Do not use emojis under any circumstances\n'
-    f'- Do not sign off with any internal role names, agent names, or system labels\n'
-    f'- Do not end with a formal sign-off or team name\n'
-    f'- Do not share incorrect information\n'
-    f'- Keep response concise and professional\n'
-    f'- Aim for 2-3 sentences. Only go longer if additional detail is genuinely helpful to the customer\n'
-    f'- Do not promise specific timeframes for human contact\n'
-    f'- Do not make commitments the bank cannot guarantee\n'
-    f'- Sound like a real bank representative, not a chatbot\n'
-)
 
 # ── Define CrewAI Agents ──────────────────────────────────
 classifier_agent = Agent(
@@ -106,21 +90,48 @@ handoff_agent = Agent(
     allow_delegation=False
 )
 
+# ── Shared response rules ─────────────────────────────────
+RESPONSE_RULES = (
+    f'Important rules:\n'
+    f'- Do not use emojis under any circumstances\n'
+    f'- Do not sign off with any internal role names, agent names, or system labels\n'
+    f'- Do not end with a formal sign-off or team name\n'
+    f'- Do not share incorrect information\n'
+    f'- Keep response concise and professional\n'
+    f'- Sound like a real bank representative, not a chatbot\n'
+)
+
+# ── Format conversation history ───────────────────────────
+def format_history(conversation_history: list) -> str:
+    """Formats recent conversation history for context injection."""
+    if not conversation_history:
+        return "No previous messages."
+    lines = []
+    for msg in conversation_history:
+        if msg.get("is_divider") or msg.get("is_greeting"):
+            continue
+        role = "Customer" if msg["role"] == "user" else "Agent"
+        lines.append(f"{role}: {msg['content']}")
+    return "\n".join(lines) if lines else "No previous messages."
+
 # ── Self-service handler ──────────────────────────────────
-def handle_self_service(message: str, classification: dict) -> dict:
+def handle_self_service(message: str, classification: dict, conversation_history: list = None) -> dict:
     """
     Handles Tier 3 self-service messages that don't need a ticket.
-    Uses Claude's general banking knowledge to respond helpfully.
+    Uses Claude's general banking knowledge with conversation context.
     """
     intent = classification.get("intent", "General")
+    history_text = format_history(conversation_history or [])
 
     prompt = (
         f'You are a knowledgeable banking customer service specialist '
         f'at a major US bank.\n\n'
-        f'Customer message: "{message}"\n'
+        f'Recent conversation context:\n{history_text}\n\n'
+        f'Current customer message: "{message}"\n'
         f'Intent identified: {intent}\n\n'
+        f'Use the conversation context to understand what the customer is referring to. '
         f'Respond helpfully using your banking knowledge. '
-        f'Give clear, actionable steps or information.\n\n'
+        f'Give clear, actionable steps or information relevant to their specific situation.\n\n'
         f'Important rules:\n'
         f'- Do not use emojis under any circumstances\n'
         f'- Do not sign off with any internal role names, agent names, or system labels\n'
@@ -150,10 +161,11 @@ def handle_self_service(message: str, classification: dict) -> dict:
     }
 
 # ── Main orchestration function ───────────────────────────
-def run_crew(message: str) -> dict:
+def run_crew(message: str, conversation_history: list = None) -> dict:
     """
     Main orchestration function.
     Classifies the message then routes to the correct agent.
+    Accepts conversation history for contextual responses.
     """
 
     # ── Step 1: Classify the message ─────────────────────
@@ -162,20 +174,28 @@ def run_crew(message: str) -> dict:
     intent = classification.get("intent", "")
     tier = classification.get("tier", 3)
 
-    # ── Step 2: Route based on sentiment + tier ───────────
+    # ── Step 2: Format history for context ───────────────
+    history_text = format_history(conversation_history or [])
+
+    # ── Step 3: Route based on sentiment + tier ───────────
     feedback_result = None
 
     if sentiment == "Escalation Request":
         task = Task(
             description=(
-                f'You are handling an escalated banking support case.\n\n'
-                f'Customer message: "{message}"\n'
+                f'Recent conversation:\n{history_text}\n\n'
+                f'You are handling an escalated banking support case.\n'
+                f'Current customer message: "{message}"\n'
                 f'Escalation reason: {classification.get("escalation_trigger")}\n\n'
+                f'Use the conversation context to personalize your response.\n'
                 f'Write a warm, empathetic response that:\n'
                 f'- Acknowledges the customer personally\n'
                 f'- Shows genuine urgency and care\n'
                 f'- Assures them a specialist will handle their case\n'
                 f'- Gives them confidence their issue will be resolved\n\n'
+                f'- Aim for 2-3 sentences. Only go longer if additional detail is genuinely helpful\n'
+                f'- Do not promise specific timeframes for human contact\n'
+                f'- Do not make commitments the bank cannot guarantee\n'
                 + RESPONSE_RULES
             ),
             expected_output="A warm empathetic escalation response",
@@ -185,8 +205,9 @@ def run_crew(message: str) -> dict:
     elif sentiment == "Positive Feedback":
         task = Task(
             description=(
-                f'You are handling positive feedback from a banking customer.\n\n'
-                f'Customer message: "{message}"\n\n'
+                f'Recent conversation:\n{history_text}\n\n'
+                f'You are handling positive feedback from a banking customer.\n'
+                f'Current customer message: "{message}"\n\n'
                 f'Write a warm, genuine thank-you response in 2-3 sentences that:\n'
                 f'- Acknowledges what they specifically said\n'
                 f'- Expresses genuine appreciation\n'
@@ -198,7 +219,7 @@ def run_crew(message: str) -> dict:
         )
 
     elif sentiment == "Negative Feedback" and intent in SELF_SERVICE_INTENTS:
-        result = handle_self_service(message, classification)
+        result = handle_self_service(message, classification, conversation_history)
         result["sentiment"] = sentiment
         result["intent"] = intent
         result["department"] = classification.get("department")
@@ -215,10 +236,12 @@ def run_crew(message: str) -> dict:
 
         task = Task(
             description=(
-                f'You are handling a complaint from a banking customer.\n\n'
-                f'Customer message: "{message}"\n'
+                f'Recent conversation:\n{history_text}\n\n'
+                f'You are handling a complaint from a banking customer.\n'
+                f'Current customer message: "{message}"\n'
                 f'Issue type: {intent}\n'
                 f'Support ticket #{ticket_id} has been created for this case.\n\n'
+                f'Use the conversation context to acknowledge their full situation.\n'
                 f'Write an empathetic response in 2-3 sentences that:\n'
                 f'- Acknowledges their specific issue with genuine understanding\n'
                 f'- Informs them ticket #{ticket_id} has been created\n'
@@ -235,8 +258,9 @@ def run_crew(message: str) -> dict:
 
         task = Task(
             description=(
-                f'You are handling a ticket status inquiry from a banking customer.\n\n'
-                f'Customer message: "{message}"\n'
+                f'Recent conversation:\n{history_text}\n\n'
+                f'You are handling a ticket status inquiry from a banking customer.\n'
+                f'Current customer message: "{message}"\n'
                 f'Database result: {status_info}\n\n'
                 f'Relay this ticket status information clearly and professionally '
                 f'in 1-2 sentences.\n\n'
@@ -247,7 +271,7 @@ def run_crew(message: str) -> dict:
         )
 
     else:
-        result = handle_self_service(message, classification)
+        result = handle_self_service(message, classification, conversation_history)
         result["sentiment"] = sentiment
         result["intent"] = intent
         result["department"] = classification.get("department")
@@ -258,7 +282,7 @@ def run_crew(message: str) -> dict:
         result["ticket_created"] = None
         return result
 
-    # ── Step 3: Create and run the Crew ──────────────────
+    # ── Step 4: Create and run the Crew ──────────────────
     crew = Crew(
         agents=[classifier_agent, feedback_agent, query_agent, handoff_agent],
         tasks=[task],
@@ -268,13 +292,13 @@ def run_crew(message: str) -> dict:
 
     crew_result = crew.kickoff()
 
-    # ── Step 4: Clean response ────────────────────────────
+    # ── Step 5: Clean response ────────────────────────────
     response_text = str(crew_result)
     disclosure = "AI-Simulated Response — Would route to a Human Representative in a live environment"
     response_text = response_text.replace(f"**{disclosure}**", "").strip()
     response_text = response_text.replace(disclosure, "").strip()
 
-    # ── Step 5: Build result dict ─────────────────────────
+    # ── Step 6: Build result dict ─────────────────────────
     result = {
         "agent": task.agent.role,
         "response": response_text,

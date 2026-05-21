@@ -234,7 +234,7 @@ def process_message(message: str):
         st.session_state.routing_log = []
 
     with st.spinner("Processing your message..."):
-        result = run_crew(message)
+        result = run_crew(message, st.session_state.messages)
 
     st.session_state.messages.append({
         "role": "user",
