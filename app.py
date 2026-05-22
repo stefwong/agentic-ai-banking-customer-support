@@ -132,7 +132,7 @@ if st.session_state.customer_name is None:
 
     if st.button("Start Chat", type="primary"):
         if name_input.strip():
-            st.session_state.customer_name = name_input.strip()
+            st.session_state.customer_name = name_input.strip().capitalize()
             st.rerun()
         else:
             st.warning("Please enter your name to continue.")
@@ -387,37 +387,40 @@ with st.expander("🔧 Engineering Log & Testing Panel"):
     if os.path.exists(log_path):
         with open(log_path, "r") as f:
             all_logs = json.load(f)
-        ratings = [l["rating"] for l in all_logs if l.get("type") == "satisfaction_rating"]
-        if ratings:
-            avg_rating = round(sum(ratings) / len(ratings), 1)
-            st.write(f"**Customer Satisfaction:** {avg_rating}/5 ⭐ ({len(ratings)} rated conversations)")
-            if avg_rating < 3.0:
-                st.error(
-                    "Low satisfaction detected. Agent prompts flagged for review. "
-                    "In a production system this would trigger an automated prompt "
-                    "optimization cycle and escalate to the LLMOps team."
-                )
-            elif avg_rating < 4.0:
-                st.warning(
-                    "Satisfaction below target threshold. "
-                    "Monitor agent responses for quality issues."
-                )
-            else:
-                st.success(
-                    "Satisfaction within acceptable range. "
-                    "No agent prompt adjustments required."
-                )
 
-            # ── Rating history log ────────────────────────
+        ratings_data = [l for l in all_logs if l.get("type") == "satisfaction_rating"]
+        if ratings_data:
+            ratings = [l["rating"] for l in ratings_data]
+
+            # ── Overall average ───────────────────────────
+            avg_rating = round(sum(ratings) / len(ratings), 1)
+            st.write(f"**Overall Satisfaction:** {avg_rating}/5 ⭐ ({len(ratings)} rated conversations)")
+            if avg_rating < 3.0:
+                st.error("Overall average below threshold. Review agent performance trends.")
+            elif avg_rating < 4.0:
+                st.warning("Overall average below target. Monitor for recurring quality issues.")
+            else:
+                st.success("Overall satisfaction healthy.")
+
+            st.divider()
+
+            # ── Rating history with per-conversation status ─
             st.write("**Rating History:**")
             rating_rows = []
-            for l in all_logs:
-                if l.get("type") == "satisfaction_rating":
-                    rating_rows.append({
-                        "Rating": "⭐" * l["rating"],
-                        "Score": f"{l['rating']}/5",
-                        "Comment": l.get("comment", "") or "—",
-                        "Messages in session": l.get("total_messages", "—")
-                    })
+            for l in ratings_data:
+                score = l["rating"]
+                if score <= 2:
+                    status = "🔴 Low — flagged for review"
+                elif score == 3:
+                    status = "🟡 Below target"
+                else:
+                    status = "🟢 Acceptable"
+                rating_rows.append({
+                    "Rating": "⭐" * score,
+                    "Score": f"{score}/5",
+                    "Status": status,
+                    "Comment": l.get("comment", "") or "—",
+                    "Messages in session": l.get("total_messages", "—")
+                })
             if rating_rows:
                 st.table(rating_rows)
