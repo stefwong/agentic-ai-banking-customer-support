@@ -10,7 +10,7 @@ Purdue University (Online) via Simplilearn — Applied Generative AI Specializat
 
 [voilla.ai](https://voilla.ai) — No setup required. Click and interact immediately.
 
-**GitHub Repository:** [to be updated after repo is created]
+**GitHub Repository:** [https://github.com/stefwong/agentic-ai-banking-customer-support](https://github.com/stefwong/agentic-ai-banking-customer-support)
 
 ---
 
