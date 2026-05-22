@@ -95,6 +95,9 @@ st.markdown("<p style='text-align:center; color:#64748b; font-size:12px; margin-
 st.divider()
 
 # ── Initialize session state ──────────────────────────────
+if "customer_name" not in st.session_state:
+    st.session_state.customer_name = None
+
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
@@ -119,11 +122,29 @@ if "rating_message" not in st.session_state:
 if "greeting_shown" not in st.session_state:
     st.session_state.greeting_shown = False
 
-# ── Add greeting as first message once per session ────────
+# ── Screen 1: Name collection ─────────────────────────────
+if st.session_state.customer_name is None:
+    st.markdown("### Welcome to Voillà Banking Customer Support")
+    st.markdown("Please enter your first name so we can assist you personally.")
+    st.write("")
+
+    name_input = st.text_input("First name", label_visibility="collapsed", placeholder="Your first name")
+
+    if st.button("Start Chat", type="primary"):
+        if name_input.strip():
+            st.session_state.customer_name = name_input.strip()
+            st.rerun()
+        else:
+            st.warning("Please enter your name to continue.")
+
+    st.stop()
+
+# ── Screen 2: Main chat (only renders after name collected) ─
+# ── Add greeting once per session ────────────────────────
 if not st.session_state.greeting_shown:
     st.session_state.messages.append({
         "role": "assistant",
-        "content": "Hi, I'm an AI Customer Service Agent. How can I help you?",
+        "content": f"Hi {st.session_state.customer_name}, I'm an AI Customer Service Agent. How can I help you today?",
         "label": None,
         "is_greeting": True
     })
@@ -234,7 +255,11 @@ def process_message(message: str):
         st.session_state.routing_log = []
 
     with st.spinner("Processing your message..."):
-        result = run_crew(message, st.session_state.messages)
+        result = run_crew(
+            message,
+            st.session_state.messages,
+            st.session_state.customer_name
+        )
 
     st.session_state.messages.append({
         "role": "user",
@@ -281,16 +306,20 @@ with st.expander("🔧 Engineering Log & Testing Panel"):
     with col1:
         if st.button("✅ Test Positive Feedback"):
             process_message(random.choice(POSITIVE_MESSAGES))
+        st.caption("Tests: Feedback Handler Agent — positive path")
 
         if st.button("❌ Test Negative Feedback"):
             process_message(random.choice(NEGATIVE_MESSAGES))
+        st.caption("Tests: Feedback Handler Agent — negative path")
 
     with col2:
         if st.button("🔍 Test Ticket Query"):
             process_message(random.choice(QUERY_MESSAGES))
+        st.caption("Tests: Query Handler Agent")
 
         if st.button("🤝 Test AI-Simulated Human Handoff"):
             process_message(random.choice(ESCALATION_MESSAGES))
+        st.caption("Tests: Human-in-the-Loop Agent")
 
     st.divider()
 

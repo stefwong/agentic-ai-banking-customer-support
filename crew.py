@@ -161,7 +161,7 @@ def handle_self_service(message: str, classification: dict, conversation_history
     }
 
 # ── Main orchestration function ───────────────────────────
-def run_crew(message: str, conversation_history: list = None) -> dict:
+def run_crew(message: str, conversation_history: list = None, customer_name: str = None) -> dict:
     """
     Main orchestration function.
     Classifies the message then routes to the correct agent.
@@ -209,6 +209,7 @@ def run_crew(message: str, conversation_history: list = None) -> dict:
                 f'You are handling positive feedback from a banking customer.\n'
                 f'Current customer message: "{message}"\n\n'
                 f'Write a warm, genuine thank-you response in 2-3 sentences that:\n'
+                f'- Begin with exactly: "Thank you for your kind words, {customer_name or "Valued Customer"}!"\n'
                 f'- Acknowledges what they specifically said\n'
                 f'- Expresses genuine appreciation\n'
                 f'- Is personable and human\n\n'
