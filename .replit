@@ -1,9 +1,14 @@
 modules = ["python-3.11"]
+
 [agent]
 expertMode = true
 
 [[ports]]
-localPort = 8501
+localPort = 8080
 externalPort = 80
 
 [nix]
+
+[deployment]
+deploymentTarget = "cloudrun"
+run = ["streamlit", "run", "app.py", "--server.port", "8080", "--server.address", "0.0.0.0", "--server.enableCORS", "false", "--server.headless", "true"]
