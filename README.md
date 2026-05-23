@@ -92,3 +92,12 @@ See [REQUIREMENTS.md](REQUIREMENTS.md) for full local setup and shell testing in
 **Stephanie Wong** — AI UX Design Engineer
 Agentic AI Banking Capstone Project 2026
 Purdue University (Online) via Simplilearn — Applied Generative AI Specialization
+
+---
+
+## Copyright
+
+Copyright (c) 2026 Stephanie Wong. All rights reserved.
+This project is submitted for academic evaluation purposes only.
+No license is granted for any other use, reproduction, modification,
+or distribution without explicit written permission from the copyright holder.
