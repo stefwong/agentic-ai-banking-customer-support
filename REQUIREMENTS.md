@@ -1,3 +1,12 @@
+## Copyright
+
+Copyright (c) 2026 Stephanie Wong. All rights reserved.
+This project is submitted for academic evaluation purposes only.
+No license is granted for any other use, reproduction, modification,
+or distribution without explicit written permission from the copyright holder.
+
+---
+
 # REQUIREMENTS.md
 # Voillà — Agentic AI Banking Customer Support
 # Local Setup & Testing Instructions
@@ -195,9 +204,15 @@ agentic-ai-banking-customer-support/
 
 ---
 
+## Alternative Live Website
+
+[agentic-ai-banking-customer-support.replit.app](https://agentic-ai-banking-customer-support.replit.app) — No setup required. Click and interact immediately.
+
+**Custom Domain (SSL propagating):** [voilla.ai](https://voilla.ai)
+
 ## Author
 
-Stephanie Wong — AI UX Design Engineer
+**Stephanie Wong** — AI UX Design Engineer
+
 Agentic AI Banking Capstone Project 2026
-Purdue University (Online) via Simplilearn — Applied Generative AI Specialization
-voilla.ai
+Submitted to: Purdue University (Online) via Simplilearn — Applied Generative AI Specialization

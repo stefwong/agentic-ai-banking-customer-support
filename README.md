@@ -2,13 +2,15 @@
 
 **Designed and Engineered by Stephanie Wong**
 Agentic AI Banking Capstone Project 2026
-Purdue University (Online) via Simplilearn — Applied Generative AI Specialization
+Submitted to: Purdue University (Online) via Simplilearn — Applied Generative AI Specialization
 
 ---
 
 ## Live Demo
 
-[voilla.ai](https://voilla.ai) — No setup required. Click and interact immediately.
+[agentic-ai-banking-customer-support.replit.app](https://agentic-ai-banking-customer-support.replit.app) — No setup required. Click and interact immediately.
+
+**Custom Domain (SSL propagating):** [voilla.ai](https://voilla.ai)
 
 **GitHub Repository:** [https://github.com/stefwong/agentic-ai-banking-customer-support](https://github.com/stefwong/agentic-ai-banking-customer-support)
 
