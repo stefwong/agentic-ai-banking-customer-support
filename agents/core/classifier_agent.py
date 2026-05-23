@@ -1,3 +1,4 @@
+# Copyright (c) 2026 Stephanie Wong. All rights reserved. This source code is submitted for academic evaluation purposes only. No license is granted for any other use, reproduction, modification, or distribution without explicit written permission from the copyright holder.
 # agents/core/classifier_agent.py
 # Classifier Agent — routes all incoming customer messages
 # Agentic AI Banking Capstone Project 2026: Engineered and Designed by Stephanie Wong

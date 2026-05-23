@@ -7,7 +7,12 @@ expertMode = true
 localPort = 8080
 externalPort = 80
 
+[[ports]]
+localPort = 8501
+externalPort = 3000
+
 [nix]
+packages = ["dig"]
 
 [deployment]
 deploymentTarget = "cloudrun"
